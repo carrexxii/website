@@ -21,7 +21,24 @@ body {
 }
 
 h1 {
-    font-size: 48pt;
+    font-size: 16pt;
+}
+
+h2 {
+    font-size: 14pt;
+}
+
+h3 {
+    font-size: 12pt;
+}
+
+h1#title {
+    font-size: 36pt;
+    text-align: center;
+}
+
+h1#header {
+    font-size: 64pt;
     font-family: "Pirata One";
     color: var(--white);
 }
@@ -34,15 +51,16 @@ div#header {
 div#body {
     background-color: var(--white);
     margin: auto;
-    padding: 20px;
-    width: 70%;
+    padding: 35px;
+    width: 60%;
+    text-align: justify;
 }
 
 div#footer {
-    background-color: var(--gray);
+    background-color: var(--brown);
     margin: auto;
-    padding: 5px;
-    width: 70%;
+    padding: 15px;
+    width: 60%;
     text-align: center;
 }
 

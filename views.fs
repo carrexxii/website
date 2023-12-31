@@ -5,7 +5,7 @@ open Giraffe.ViewEngine
 let layout header content footer =
     html [] [
         head [] [
-            title [] [ encodedText "website" ]
+            title [] [ str "AIBeard's News" ]
             link [
                 _rel  "stylesheet"
                 _type "text/css"
@@ -19,25 +19,22 @@ let layout header content footer =
         ]
     ]
 
-let partial () =
-    h1 [] [ encodedText "website" ]
-
 let header () =
     div [ _id "header" ] [
-        h1 [] [ encodedText "Website Header" ]
+        h1 [ _id "header" ] [ str "News From the High Seas" ]
         nav [ _id "navbar" ] [
-            a [ _class "navbtn"; _href "/about" ] [ encodedText "About" ]
-            a [ _class "navbtn"; _href "/archive" ] [ encodedText "Archive" ]
-            a [ _class "navbtn"; _href "/posts/-1" ] [ encodedText "Random" ]
+            a [ _class "navbtn"; _href "/about"    ] [ str "About"   ]
+            a [ _class "navbtn"; _href "/archive"  ] [ str "Archive" ]
+            a [ _class "navbtn"; _href "/posts/-1" ] [ str "Random"  ]
         ]
     ]
 
 let footer () =
     div [ _id "footer" ] [
-        encodedText "footer"
+        str "footer"
     ]
 
-let index (post: Models.Post) =
+let index post =
     layout <| header ()
-           <| div [ _id "body" ] [ encodedText post.content ]
+           <| div [ _id "body" ] [ post ]
            <| footer ()

@@ -10,8 +10,8 @@ open Microsoft.Extensions.DependencyInjection
 open Giraffe
 
 let indexHandler id =
-    let model = $"Requesting post #{id}"
-    let view  = Views.index { id = 1; content = "Hello, World!" }
+    let model = Models.example.toHtml ()
+    let view  = Views.index model
     htmlView view
 
 let errorHandler (exn: Exception) (logger: ILogger) =
