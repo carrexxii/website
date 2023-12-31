@@ -1,6 +1,6 @@
 module Models
 
 type Post = {
-    id  : int
-    text: string
+    id     : int
+    content: string
 }

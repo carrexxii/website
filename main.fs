@@ -11,7 +11,7 @@ open Giraffe
 
 let indexHandler id =
     let model = $"Requesting post #{id}"
-    let view  = Views.index model
+    let view  = Views.index { id = 1; content = "Hello, World!" }
     htmlView view
 
 let errorHandler (exn: Exception) (logger: ILogger) =
@@ -23,7 +23,7 @@ let webApp =
         GET >=>
             choose [
                 route "/" >=> indexHandler -1
-                routef "/post/%i" indexHandler
+                routef "/posts/%i" indexHandler
             ]
         setStatusCode 404 >=> text "Not Found"
     ]
@@ -54,12 +54,12 @@ let configureServices (services: IServiceCollection) =
 
 let configureLogging (builder: ILoggingBuilder) =
     builder.AddConsole()
-           .AddDebug () |> ignore
+           .AddDebug() |> ignore
 
 [<EntryPoint>]
 let main args =
-    let contentRoot = Directory.GetCurrentDirectory()
-    let webRoot     = Path.Combine(contentRoot, "WebRoot")
+    let contentRoot = Directory.GetCurrentDirectory ()
+    let webRoot     = Path.Combine (contentRoot, "static")
     Host.CreateDefaultBuilder(args)
         .ConfigureWebHostDefaults(fun webHostBuilder ->
             webHostBuilder
@@ -70,5 +70,5 @@ let main args =
                 .ConfigureLogging(configureLogging)
                 |> ignore)
         .Build()
-        .Run ()
+        .Run()
     0

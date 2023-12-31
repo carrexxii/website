@@ -19,7 +19,7 @@
 
   <ItemGroup>
     <None Include="web.config" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="WebRoot\**\*">
+    <Content Include="static\**\*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
