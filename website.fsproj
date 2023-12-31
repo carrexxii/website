@@ -12,6 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="models.fs" />
+    <Compile Include="views.fs" />
     <Compile Include="main.fs" />
   </ItemGroup>
 
