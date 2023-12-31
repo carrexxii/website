@@ -3,5 +3,5 @@ bin/
 obj/
 *.txt
 *.ttf
-
+*.db
 .fake

@@ -1,12 +1,16 @@
 module Models
 
+open Giraffe
 open Giraffe.ViewEngine
+open LiteDB
+open LiteDB.FSharp
 
+[<CLIMutable>]
 type Post =
     { id     : int
       title  : string
       content: string }
-    with
+
     member this.toHtml () = 
         div [] [
             h1 [ _id "title" ] [ rawText this.title ]
@@ -50,3 +54,12 @@ let example = {
 <p>Fair winds and a speedy charge to all ye future Tesla Buccaneers!</p>
 "
 }
+
+let db    = new LiteDatabase ("posts.db", FSharpBsonMapper ())
+let posts = db.GetCollection<Post> "posts"
+
+let getById (id: int) =
+    posts.FindById (BsonValue id)
+
+let getPost () = 
+    (getById 1).toHtml () |> htmlView

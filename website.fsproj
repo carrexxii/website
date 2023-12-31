@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Giraffe" Version="6.2.*" />
     <PackageReference Include="Giraffe.ViewEngine" Version="1.4.*" />
+    <PackageReference Include="litedb.fsharp" Version="2.16.0" />
   </ItemGroup>
 
   <ItemGroup>
