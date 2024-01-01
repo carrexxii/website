@@ -1,5 +1,6 @@
 open System
 open System.IO
+open Microsoft.AspNetCore.Http
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Cors.Infrastructure
 open Microsoft.AspNetCore.Hosting
@@ -10,9 +11,22 @@ open Microsoft.Extensions.DependencyInjection
 open Giraffe
 
 let indexHandler id =
-    let model = Models.example.toHtml ()
+    let model = (Models.getById id).toHtml ()
     let view  = Views.index model
     htmlView view
+
+let postHandler =
+    fun next (ctx: HttpContext) ->
+        task {
+            let! post = ctx.TryBindFormAsync<Models.SubmitPost> ()
+            return! (
+                match post with
+                | Error e -> RequestErrors.BAD_REQUEST e
+                | Ok post ->
+                    Models.addPost post |> ignore
+                    Successful.OK post
+            ) next ctx
+        }
 
 let errorHandler (exn: Exception) (logger: ILogger) =
     logger.LogError (exn, "An unhandled exception has occurred while executing the request.")
@@ -20,14 +34,17 @@ let errorHandler (exn: Exception) (logger: ILogger) =
 
 let webApp =
     choose [
-        GET >=>
-            choose [
-                route "/" >=> indexHandler -1
-                routef "/posts/%i" indexHandler
-                route "/about"   >=> htmlView (Views.about ())
-                route "/archive" >=> htmlView (Views.archive ())
-                route "/add"     >=> htmlView (Views.add ())
-            ]
+        GET >=> choose [
+            route "/" >=> indexHandler -1
+            routef "/posts/%i" indexHandler
+            route "/about"   >=> htmlView (Views.about ())
+            route "/archive" >=> htmlView (Views.archive ())
+            route "/post"    >=> htmlView (Views.post ())
+        ]
+        POST >=> choose [
+            route "/post" >=> postHandler
+        ]
+
         setStatusCode 404 >=> text "Not Found"
     ]
 

@@ -16,6 +16,15 @@ type Post =
             h1 [ _id "title" ] [ rawText this.title ]
             rawText this.content
         ]
+    member this.toListing () =
+        $"{this.id}. {this.title}"
+
+// So the form does not have to include an id
+[<CLIMutable>]
+type SubmitPost = {
+    title  : string
+    content: string
+}
 
 let example = {
     id      = 1
@@ -59,11 +68,19 @@ let db    = new LiteDatabase ("posts.db", FSharpBsonMapper ())
 let posts = db.GetCollection<Post> "posts"
 
 let getById (id: int) =
+    let id = if id = -1 then posts.Count () else id
     posts.FindById (BsonValue id)
 
 let getPost () = 
-    (getById 1).toHtml () |> htmlView
+    (getById <| posts.Count () - 1).toHtml () |> htmlView
 
 let getPostList () =
     let posts = posts.FindAll ()
-    Seq.map (fun p -> $"{p.id}. {p.title}") posts
+    Seq.map (fun (p: Post) -> p.toListing ()) posts
+
+let addPost (post: SubmitPost) =
+    posts.Insert {
+        id      = posts.Count () + 1
+        title   = post.title
+        content = post.content
+    }

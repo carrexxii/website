@@ -98,7 +98,7 @@ input#postTitle {
     box-shadow: 2px 2px 2px #999;
 }
 
-textarea#postBody {
+textarea#postContent {
     width: 100%;
     min-height: 300px;
     line-height: 1.5;
