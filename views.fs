@@ -1,71 +1,97 @@
-module Views
+namespace Server
 
-open Giraffe.ViewEngine
+open Feliz.ViewEngine
 
-let layout header content footer =
-    html [] [
-        head [] [
-            title [] [ str "AIBeard's News" ]
-            link [
-                _rel  "stylesheet"
-                _type "text/css"
-                _href "/styles.css"
+module Views =
+    let header () =
+        Html.div [
+            prop.id "header"
+            prop.children [
+            Html.a [
+                prop.id "header"; prop.href "/"
+                prop.text "News From the High Seas"
+            ]
+            Html.nav [
+                prop.id "navbar"
+                prop.children [
+                Html.a [ prop.className "btn"; prop.href "/about"   ; prop.text "About"   ]
+                Html.a [ prop.className "btn"; prop.href "/archive" ; prop.text "Archive" ]
+                Html.a [ prop.className "btn"; prop.href "/posts/-1"; prop.text "Random"  ]
+                Html.a [ prop.className "btn"; prop.href "/post"    ; prop.text "Post"    ]
+                ]
+            ]
             ]
         ]
-        body [] [
-            header
-            content
-            footer
+
+    let footer () =
+        Html.div [
+            prop.id "footer"
+            prop.text "footer"
         ]
-    ]
 
-let header () =
-    div [ _id "header" ] [
-        a [ _id "header"; _href "/" ] [ str "News From the High Seas" ]
-        nav [ _id "navbar" ] [
-            a [ _class "btn"; _href "/about"    ] [ str "About"   ]
-            a [ _class "btn"; _href "/archive"  ] [ str "Archive" ]
-            a [ _class "btn"; _href "/posts/-1" ] [ str "Random"  ]
-            a [ _class "btn"; _href "/post"     ] [ str "Post"    ]
+    let layout (content: ReactElement) =
+        Html.html [
+            Html.head [
+                Html.title "AIBeard's News"
+                Html.link [
+                    prop.rel   "stylesheet"
+                    prop.type' "text/css"
+                    prop.href  "/styles.css"
+                ]
+            ]
+            Html.body [
+                header ()
+                content
+                footer ()
+            ]
         ]
-    ]
 
-let footer () =
-    div [ _id "footer" ] [
-        str "footer"
-    ]
-
-let addForm () =
-    form [ _method "POST" ] [
-        form [ _action "/post"; _method "POST" ] [
-            input [ _id "postTitle"; _name "title"; _placeholder "Post Title" ]
-            textarea [ _id "postContent"; _name "content"; _placeholder "Post content" ] []
-            div [ _class "centre" ] [ input [ _type "submit"; _class "btn" ] ]
+    let addForm () =
+        Html.form [
+            prop.method "POST"
+            prop.children [
+            Html.form [
+                prop.action "/post"
+                prop.method "POST"
+                prop.children [
+                Html.input [
+                    prop.id "postTitle"
+                    prop.name "title"
+                    prop.placeholder "Post Title"
+                ]
+                Html.textarea [
+                    prop.id "postContent"
+                    prop.name "content"
+                    prop.placeholder "Post content"
+                ]
+                Html.div [
+                    prop.className "centre"
+                    prop.children [
+                        Html.input [ prop.type' "submit"; prop.className "btn" ] ]
+                ]
+                ]
+            ]
+            ]
         ]
-    ]
 
-let index post =
-    layout <| header ()
-           <| div [ _id "body" ] [ post ]
-           <| footer ()
+    let index post =
+        layout <| Html.div [ prop.id "body"; prop.children [ post ] ]
 
-let about () =
-    layout <| header ()
-           <| div [ _id "body" ] [ str "about" ]
-           <| footer ()
+    let about () =
+        layout <| Html.div [ prop.id "body"; prop.text "about" ]
 
-let archive () =
-    layout <| header ()
-           <| div [ _id "body" ] [
-                h1 [] [ str "Archive of All Posts" ]
-                ul [] (Seq.toList <| Seq.map
-                    (fun t -> li [ _id "archive" ] [str t])
-                    (Models.getPostList ())
-                )
-           ]
-           <| footer ()
+    let archive () =
+        layout
+        <| Html.div [
+            prop.id "body"
+            prop.children [
+            Html.h1 "Archive of All Posts"
+            Html.ul (Seq.toList <| Seq.map
+                (fun (t: string) ->
+                    Html.li [ prop.id "archive"; prop.text t ])
+                (Models.getPostList ()))
+            ]
+        ]
 
-let post () =
-    layout <| header ()
-           <| div [ _id "body" ] [ addForm () ]
-           <| footer ()
+    let post () =
+        layout <| Html.div [ prop.id "body"; prop.children [addForm ()] ]

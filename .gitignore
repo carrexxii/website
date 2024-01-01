@@ -2,6 +2,7 @@
 .config/
 bin/
 obj/
+fable_modules/
 *.txt
 *.ttf
 *.db
