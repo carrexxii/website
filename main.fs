@@ -24,7 +24,9 @@ let webApp =
             choose [
                 route "/" >=> indexHandler -1
                 routef "/posts/%i" indexHandler
-                route "/dbtest" >=> Models.getPost ()
+                route "/about"   >=> htmlView (Views.about ())
+                route "/archive" >=> htmlView (Views.archive ())
+                route "/add"     >=> htmlView (Views.add ())
             ]
         setStatusCode 404 >=> text "Not Found"
     ]

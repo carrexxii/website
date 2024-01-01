@@ -37,7 +37,8 @@ h1#title {
     text-align: center;
 }
 
-h1#header {
+a#header {
+    text-decoration: none;
     font-size: 64pt;
     font-family: "Pirata One";
     color: var(--white);
@@ -68,21 +69,48 @@ div#footer {
     vertical-align: bottom;
 }
 
-a.navbtn {
+.btn {
     background-color: var(--gold);
     color: var(--black);
 
     display: inline-block;
     margin: 10px;
-    width: 80px;
-    height: 30px;
+    width: 95px;
+    height: 40px;
     text-align: center;
-    line-height: 30px;
+    line-height: 40px;
     font-size: 14pt;
-    border-radius: 5px;
+    border-radius: 8px;
 
     text-decoration: none;
 }
-a.navbtn:hover {
+.btn:hover {
     background-color: var(--red);
+}
+
+input#postTitle {
+    width: 70%;
+    font-size: 24pt;
+    text-align: center;
+    margin: 15px 15%;
+    padding: 5px;
+    border-radius: 8px;
+    box-shadow: 2px 2px 2px #999;
+}
+
+textarea#postBody {
+    width: 100%;
+    min-height: 300px;
+    line-height: 1.5;
+    resize: vertical;
+}
+
+.centre {
+    text-align:center;
+    margin: auto;
+}
+
+li#archive {
+    font-size: 14pt;
+    list-style: none;
 }

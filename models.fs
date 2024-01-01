@@ -63,3 +63,7 @@ let getById (id: int) =
 
 let getPost () = 
     (getById 1).toHtml () |> htmlView
+
+let getPostList () =
+    let posts = posts.FindAll ()
+    Seq.map (fun p -> $"{p.id}. {p.title}") posts
