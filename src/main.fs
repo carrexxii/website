@@ -15,9 +15,9 @@ open Feliz.ViewEngine
 
 module Main =
     let indexHandler id =
-        let model = (Models.getById id).toHtml ()
+        let model = Models.getById id |> Views.ofPost
         let view  = Views.index model
-        htmlString (Render.htmlDocument view)
+        Render.htmlDocument view |> htmlString
 
     let postHandler =
         fun next (ctx: HttpContext) ->
@@ -82,8 +82,9 @@ module Main =
 
     [<EntryPoint>]
     let main args =
-        let contentRoot = Directory.GetCurrentDirectory ()
-        let webRoot     = Path.Combine (contentRoot, "static")
+        let cwd         = Directory.GetCurrentDirectory ()
+        let contentRoot = Path.Join (cwd, "client")
+        let webRoot     = Path.Join (cwd, "client")
         Host.CreateDefaultBuilder(args)
             .ConfigureWebHostDefaults(fun webHostBuilder ->
                 webHostBuilder

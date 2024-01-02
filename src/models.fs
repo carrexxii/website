@@ -1,6 +1,5 @@
 namespace Server
 
-open Feliz.ViewEngine
 open LiteDB
 open LiteDB.FSharp
 
@@ -11,13 +10,6 @@ module Models =
           title  : string
           content: string }
 
-        member this.toHtml () = 
-            Html.div [
-                prop.children [
-                Html.h1 [ prop.id "title"; prop.text this.title ]
-                ]
-                prop.text this.content
-            ]
         member this.toListing () =
             $"{this.id}. {this.title}"
 
@@ -74,7 +66,7 @@ module Models =
         posts.FindById (BsonValue id)
 
     let getPost () = 
-        (getById <| posts.Count () - 1).toHtml ()
+        getById <| posts.Count () - 1
 
     let getPostList () =
         let posts = posts.FindAll ()

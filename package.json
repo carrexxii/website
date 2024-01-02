@@ -1,9 +1,13 @@
 {
-  "name": "website",
-  "version": "0.0.1",
-  "description": "",
-  "main": "main.fs.js",
-  "type": "module",
-  "author": "carrexxii",
-  "license": "MIT"
+  "scripts": {
+    "babel": "npx babel --presets=babel-preset-react client/*.jsx --out-dir ."
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-react": "^6.24.1"
+  }
 }

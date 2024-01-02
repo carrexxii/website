@@ -3,7 +3,10 @@
 bin/
 obj/
 fable_modules/
+node_modules/
+package-lock.json
 *.txt
 *.ttf
 *.db
+*.js
 .fake

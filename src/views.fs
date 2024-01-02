@@ -1,8 +1,17 @@
 namespace Server
 
+open Feliz
 open Feliz.ViewEngine
 
 module Views =
+    let ofPost (post: Models.Post) =
+        Html.div [
+            // prop.children [
+            // Html.h1 [ prop.id "title"; prop.text post.title ]
+            // ]
+            // prop.text post.content
+        ]
+
     let header () =
         Html.div [
             prop.id "header"
@@ -42,11 +51,14 @@ module Views =
             Html.body [
                 header ()
                 content
+                Html.script [ prop.type' "module"; prop.src "react.js" ]
+                Html.script [ prop.type' "module"; prop.src "react-dom.js" ]
+                Html.script [ prop.type' "module"; prop.src "test.js" ]
                 footer ()
             ]
         ]
 
-    let addForm () =
+    let postForm () =
         Html.form [
             prop.method "POST"
             prop.children [
@@ -75,15 +87,15 @@ module Views =
         ]
 
     let index post =
-        layout <| Html.div [ prop.id "body"; prop.children [ post ] ]
+        layout <| Html.div [ prop.id "root"; prop.children [ post ] ]
 
     let about () =
-        layout <| Html.div [ prop.id "body"; prop.text "about" ]
+        layout <| Html.div [ prop.id "root"; prop.text "about" ]
 
     let archive () =
         layout
         <| Html.div [
-            prop.id "body"
+            prop.id "root"
             prop.children [
             Html.h1 "Archive of All Posts"
             Html.ul (Seq.toList <| Seq.map
@@ -94,4 +106,4 @@ module Views =
         ]
 
     let post () =
-        layout <| Html.div [ prop.id "body"; prop.children [addForm ()] ]
+        layout <| Html.div [ prop.id "root"; prop.children [postForm ()] ]
