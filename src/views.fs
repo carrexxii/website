@@ -38,7 +38,7 @@ module Views =
             prop.text "footer"
         ]
 
-    let layout (content: ReactElement) =
+    let layout (content: ReactElement) script =
         Html.html [
             Html.head [
                 Html.title "AIBeard's News"
@@ -53,7 +53,10 @@ module Views =
                 content
                 Html.script [ prop.type' "module"; prop.src "react.js" ]
                 Html.script [ prop.type' "module"; prop.src "react-dom.js" ]
-                Html.script [ prop.type' "module"; prop.src "test.js" ]
+                Html.script [ prop.type' "module"; prop.src "components.js" ]
+                match script with
+                | Some script -> Html.script [ prop.type' "module"; prop.src $"{script}.js" ]
+                | None -> ()
                 footer ()
             ]
         ]
@@ -87,10 +90,14 @@ module Views =
         ]
 
     let index post =
-        layout <| Html.div [ prop.id "root"; prop.children [ post ] ]
+        layout
+        <| Html.div [ prop.id "root"; prop.children [ post ] ]
+        <| None
 
     let about () =
-        layout <| Html.div [ prop.id "root"; prop.text "about" ]
+        layout
+        <| Html.div [ prop.id "root"; prop.text "about" ]
+        <| None
 
     let archive () =
         layout
@@ -104,6 +111,9 @@ module Views =
                 (Models.getPostList ()))
             ]
         ]
+        <| None
 
     let post () =
-        layout <| Html.div [ prop.id "root"; prop.children [postForm ()] ]
+        layout
+        <| Html.div [ prop.id "root"; prop.children [postForm ()] ]
+        <| Some "post"
