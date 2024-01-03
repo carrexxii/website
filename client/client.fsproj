@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <AssemblyName>server</AssemblyName>
+    <EnableDefaultContentItems>false</EnableDefaultContentItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="feliz" Version="2.7.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="components.fs" />
+  </ItemGroup>
+</Project>

@@ -1,16 +1,37 @@
-all: js
+SRC_DIR    = ./
+CLIENT_DIR = ./client
+
+all: js fable
 	dotnet run
+
+.PHONY: watch
+watch:
+	dotnet fable watch $(CLIENT_DIR) &
+	dotnet watch run
 
 .PHONY: js
 js:
 	npm run babel
-	cp ./node_modules/react/umd/react.production.min.js ./client/react.js
-	cp ./node_modules/react-dom/umd/react-dom.production.min.js ./client/react-dom.js
+	cp ./node_modules/react/umd/react.production.min.js $(CLIENT_DIR)/react.js
+	cp ./node_modules/react-dom/umd/react-dom.production.min.js $(CLIENT_DIR)/react-dom.js
 
-.PHONY: watch
-watch: js
-	dotnet watch run
+.PHONY: fable
+fable:
+	dotnet fable $(CLIENT_DIR)
+
+.PHONY: install
+install:
+	npm install
+	dotnet restore $(SRC_DIR)
+	dotnet restore $(CLIENT_DIR)
 
 .PHONY: clean
 clean:
-	rm ./client/*.js
+	@rm -f $(CLIENT_DIR)/*.js
+
+.PHONY: remove
+remove: clean
+	@rm -rf ./*_modules
+	@rm -rf $(SRC_DIR)/*_modules
+	@rm -rf $(SRC_DIR)/obj/ $(CLIENT_DIR)/obj/
+	@rm -rf $(SRC_DIR)/bin/ $(CLIENT_DIR)/bin/

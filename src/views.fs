@@ -4,12 +4,15 @@ open Feliz
 open Feliz.ViewEngine
 
 module Views =
+    let [<Literal>] frameworkCSS = "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    let [<Literal>] frameworkJS  = "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+
     let ofPost (post: Models.Post) =
         Html.div [
-            // prop.children [
-            // Html.h1 [ prop.id "title"; prop.text post.title ]
-            // ]
-            // prop.text post.content
+            prop.children [
+            Html.h1 [ prop.id "title"; prop.text post.title ]
+            ]
+            prop.text post.content
         ]
 
     let header () =
@@ -27,6 +30,7 @@ module Views =
                 Html.a [ prop.className "btn"; prop.href "/archive" ; prop.text "Archive" ]
                 Html.a [ prop.className "btn"; prop.href "/posts/-1"; prop.text "Random"  ]
                 Html.a [ prop.className "btn"; prop.href "/post"    ; prop.text "Post"    ]
+                Html.div [ prop.id "button" ]
                 ]
             ]
             ]
@@ -40,26 +44,35 @@ module Views =
 
     let layout (content: ReactElement) script =
         Html.html [
+            prop.lang "en"
+            prop.children [
             Html.head [
-                Html.title "AIBeard's News"
+                Html.meta [ prop.charset "utf-8" ]
+
+                Html.script [ prop.type' "module"; prop.src "react.js" ]
+                Html.script [ prop.type' "module"; prop.src "react-dom.js" ]
+                Html.script [ prop.type' "module"; prop.src "components.js" ]
+                Html.script [ prop.type' "module"; prop.src frameworkJS ]
                 Html.link [
                     prop.rel   "stylesheet"
                     prop.type' "text/css"
-                    prop.href  "/styles.css"
+                    prop.href  frameworkCSS
                 ]
+
+                Html.title "AIBeard's News"
             ]
             Html.body [
                 header ()
                 content
-                Html.script [ prop.type' "module"; prop.src "react.js" ]
-                Html.script [ prop.type' "module"; prop.src "react-dom.js" ]
-                Html.script [ prop.type' "module"; prop.src "components.js" ]
                 match script with
                 | Some script -> Html.script [ prop.type' "module"; prop.src $"{script}.js" ]
                 | None -> ()
                 footer ()
             ]
+            ]
         ]
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     let postForm () =
         Html.form [
@@ -88,6 +101,8 @@ module Views =
             ]
             ]
         ]
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     let index post =
         layout

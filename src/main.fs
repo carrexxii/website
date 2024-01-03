@@ -22,7 +22,7 @@ module Main =
     let postHandler =
         fun next (ctx: HttpContext) ->
             task {
-                let! post = ctx.TryBindFormAsync<Models.SubmitPost> ()
+                let! post = ctx.TryBindFormAsync<Models.FormPost> ()
                 return! (
                     match post with
                     | Error e -> RequestErrors.BAD_REQUEST e
@@ -83,7 +83,7 @@ module Main =
     [<EntryPoint>]
     let main args =
         let cwd         = Directory.GetCurrentDirectory ()
-        let contentRoot = Path.Join (cwd, "client")
+        let contentRoot = Path.Join (cwd, "client/static")
         let webRoot     = Path.Join (cwd, "client")
         Host.CreateDefaultBuilder(args)
             .ConfigureWebHostDefaults(fun webHostBuilder ->

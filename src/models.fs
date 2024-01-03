@@ -15,7 +15,7 @@ module Models =
 
     // So the form does not have to include an id
     [<CLIMutable>]
-    type SubmitPost = {
+    type FormPost = {
         title  : string
         content: string
     }
@@ -63,7 +63,10 @@ module Models =
 
     let getById (id: int) =
         let id = if id = -1 then posts.Count () else id
-        posts.FindById (BsonValue id)
+        if posts.Count () > 0 then
+            posts.FindById (BsonValue id)
+        else
+            { id = 0; title = ""; content = "" }
 
     let getPost () = 
         getById <| posts.Count () - 1
@@ -72,7 +75,7 @@ module Models =
         let posts = posts.FindAll ()
         Seq.map (fun (p: Post) -> p.toListing ()) posts
 
-    let addPost (post: SubmitPost) =
+    let addPost (post: FormPost) =
         posts.Insert {
             id      = posts.Count () + 1
             title   = post.title

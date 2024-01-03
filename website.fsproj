@@ -4,20 +4,17 @@
     <AssemblyName>server</AssemblyName>
     <EnableDefaultContentItems>false</EnableDefaultContentItems>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="feliz" Version="2.7.0" />
     <PackageReference Include="feliz.viewengine" Version="0.24.0" />
     <PackageReference Include="Giraffe" Version="6.2.0" />
     <PackageReference Include="litedb.fsharp" Version="2.16.0" />
   </ItemGroup>
-  
   <ItemGroup>
     <Compile Include="src/models.fs" />
     <Compile Include="src/views.fs" />
     <Compile Include="src/main.fs" />
   </ItemGroup>
-
   <ItemGroup>
     <None Include="./web.config" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="./client/**/*">
