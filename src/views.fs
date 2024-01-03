@@ -119,57 +119,41 @@ module Views =
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     let postForm () =
-        Html.form [
-            prop.method "POST"
+        Html.div [
             prop.children [
             Html.form [
-                prop.action "/post"
-                prop.method "POST"
+                prop.classes [ CSS.form_floating; CSS.m_5 ]
                 prop.children [
-                Html.div [
-                    prop.classes [ CSS.mb_3; CSS.h1; CSS.text_center ]
-                    prop.children [
-                    Html.input [
-                        prop.type'       "text"
-                        prop.classes     [ CSS.form_text ]
-                        prop.id          "titleForm"
-                        prop.placeholder "Post Title"
-                    ]
-                    ]
+                Html.input [
+                    prop.classes     [ CSS.form_control; CSS.p_3; CSS.pt_5; CSS.w_75; CSS.fs_3 ]
+                    prop.id          "titleForm"
+                    prop.placeholder "Post Title"
                 ]
-                Html.div [
-                    prop.classes [ CSS.mb_3; CSS.px_5 ]
-                    prop.children [
-                    Html.textarea [
-                        prop.type'       "text"
-                        prop.classes     [ CSS.form_control ]
-                        prop.id          "titleContent"
-                        prop.placeholder "Post Content"
-                        prop.rows        5
-                    ]
-                    ]
+                Html.label [
+                    prop.for' "titleForm"
+                    prop.text "Post Title"
                 ]
-                Html.button [
-                    prop.type'   "submit"
-                    prop.classes [ CSS.btn; CSS.btn_primary; CSS.float_end; CSS.py_2; CSS.px_4; CSS.m_5 ]
-                    prop.text    "Submit"
                 ]
-                // Html.input [
-                //     prop.id "postTitle"
-                //     prop.name "title"
-                //     prop.placeholder "Post Title"
-                // ]
-                // Html.textarea [
-                //     prop.id "postContent"
-                //     prop.name "content"
-                //     prop.placeholder "Post content"
-                // ]
-                // Html.div [
-                //     prop.className "centre"
-                //     prop.children [
-                //         Html.input [ prop.type' "submit"; prop.className "btn" ] ]
-                // ]
+            ]
+            Html.form [
+                prop.classes [ CSS.form_floating; CSS.m_5 ]
+                prop.children [
+                Html.textarea [
+                    prop.classes     [ CSS.form_control; CSS.px_3 ]
+                    prop.id          "titleContent"
+                    prop.placeholder "Post Content"
+                    prop.style [ style.height 300 ]
                 ]
+                Html.label [
+                    prop.for' "titleContent"
+                    prop.text "Post Content"
+                ]
+                ]
+            ]
+            Html.button [
+                prop.type'   "submit"
+                prop.classes [ CSS.btn; CSS.btn_primary; CSS.float_end; CSS.py_2; CSS.px_4; CSS.m_5 ]
+                prop.text    "Submit"
             ]
             ]
         ]
