@@ -5,15 +5,15 @@ all: js fable
 	dotnet run
 
 .PHONY: watch
-watch:
+watch: clean js
 	dotnet fable watch $(CLIENT_DIR) &
 	dotnet watch run
 
 .PHONY: js
 js:
 	npm run babel
-	cp ./node_modules/react/umd/react.production.min.js $(CLIENT_DIR)/react.js
-	cp ./node_modules/react-dom/umd/react-dom.production.min.js $(CLIENT_DIR)/react-dom.js
+	cp ./node_modules/react/umd/react.production.min.js $(CLIENT_DIR)/lib/react.js
+	cp ./node_modules/react-dom/umd/react-dom.production.min.js $(CLIENT_DIR)/lib/react-dom.js
 
 .PHONY: fable
 fable:

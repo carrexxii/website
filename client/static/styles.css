@@ -1,0 +1,17 @@
+@font-face {
+    font-family: "Pirata One"; 
+    src:url("PirataOne-Regular.ttf")format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+.pirata-font {
+    text-decoration: none;
+    font-size: 64pt;
+    font-family: "Pirata One";
+    color: black;
+}
+
+.nav-link {
+    font-size: 16pt !important;
+}

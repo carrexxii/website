@@ -2,10 +2,24 @@ namespace Server
 
 open Feliz
 open Feliz.ViewEngine
+open Zanaptak.TypedCssClasses
 
 module Views =
-    let [<Literal>] frameworkCSS = "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-    let [<Literal>] frameworkJS  = "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    let [<Literal>] frameworkCSS = "lib/bootstrap.min.css"
+    let [<Literal>] frameworkJS  = "lib/bootstrap.bundle.min.js"
+    type CSS = CssClasses<"client/lib/bootstrap.min.css", Naming.Underscores>
+    type CustomCSS = CssClasses<"client/static/styles.css", Naming.Underscores>
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    let a (text: string) href classes =
+        Html.a [
+            prop.classes classes
+            prop.href href
+            prop.text text
+        ]
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     let ofPost (post: Models.Post) =
         Html.div [
@@ -16,21 +30,30 @@ module Views =
         ]
 
     let header () =
+        let navBtn (text: string) link =
+            Html.li [
+                prop.classes [ CSS.nav_item ]
+                prop.children [ a text link [ CSS.nav_link ] ]
+            ]
+
         Html.div [
-            prop.id "header"
+            prop.classes [ CSS.p_5; CSS.bg_primary; CSS.text_center ]
             prop.children [
-            Html.a [
-                prop.id "header"; prop.href "/"
-                prop.text "News From the High Seas"
+            Html.h1 [
+                prop.children [ a "News From the High Seas" "/" [ CustomCSS.pirata_font; CSS.text_light ] ]
             ]
             Html.nav [
-                prop.id "navbar"
+                prop.classes [ CSS.navbar; CSS.navbar_expand_lg; CSS.justify_content_center ]
                 prop.children [
-                Html.a [ prop.className "btn"; prop.href "/about"   ; prop.text "About"   ]
-                Html.a [ prop.className "btn"; prop.href "/archive" ; prop.text "Archive" ]
-                Html.a [ prop.className "btn"; prop.href "/posts/-1"; prop.text "Random"  ]
-                Html.a [ prop.className "btn"; prop.href "/post"    ; prop.text "Post"    ]
-                Html.div [ prop.id "button" ]
+                Html.ul [
+                    prop.classes [ CSS.nav ]
+                    prop.children [
+                    navBtn "Home"    "/"
+                    navBtn "Random"  "/posts/-1"
+                    navBtn "Archive" "/archive"
+                    navBtn "Post"    "/post"
+                    ]
+                ]
                 ]
             ]
             ]
@@ -48,26 +71,47 @@ module Views =
             prop.children [
             Html.head [
                 Html.meta [ prop.charset "utf-8" ]
+                Html.meta [ prop.name "viewport"; prop.content "width=device-width, initial-scale=1" ]
 
-                Html.script [ prop.type' "module"; prop.src "react.js" ]
-                Html.script [ prop.type' "module"; prop.src "react-dom.js" ]
-                Html.script [ prop.type' "module"; prop.src "components.js" ]
-                Html.script [ prop.type' "module"; prop.src frameworkJS ]
+                let script name = Html.script [ prop.type' "module"; prop.src name ]
+                script "lib/react.js"
+                script "lib/react-dom.js"
+                script "components.js"
+                script frameworkJS
+
                 Html.link [
                     prop.rel   "stylesheet"
                     prop.type' "text/css"
                     prop.href  frameworkCSS
                 ]
+                Html.link [
+                    prop.rel   "stylesheet"
+                    prop.type' "text/css"
+                    prop.href  "static/styles.css"
+                ]
 
                 Html.title "AIBeard's News"
             ]
             Html.body [
+                prop.classes [ CSS.row; CSS.justify_content_center ]
+                prop.children [
                 header ()
-                content
-                match script with
-                | Some script -> Html.script [ prop.type' "module"; prop.src $"{script}.js" ]
-                | None -> ()
-                footer ()
+
+                Html.div [ prop.classes [ CSS.col; CSS.col_sm_2 ] ]
+                Html.div [
+                    prop.classes [ CSS.col; CSS.col_sm_8 ]
+                    prop.children [
+
+                    content
+                    match script with
+                    | Some script -> Html.script [ prop.type' "module"; prop.src $"{script}.js" ]
+                    | None -> ()
+
+                    footer ()
+                    ]
+                ]
+                Html.div [ prop.classes [ CSS.col; CSS.col_sm_2 ] ]
+                ]
             ]
             ]
         ]
@@ -82,21 +126,49 @@ module Views =
                 prop.action "/post"
                 prop.method "POST"
                 prop.children [
-                Html.input [
-                    prop.id "postTitle"
-                    prop.name "title"
-                    prop.placeholder "Post Title"
-                ]
-                Html.textarea [
-                    prop.id "postContent"
-                    prop.name "content"
-                    prop.placeholder "Post content"
+                Html.div [
+                    prop.classes [ CSS.mb_3; CSS.h1; CSS.text_center ]
+                    prop.children [
+                    Html.input [
+                        prop.type'       "text"
+                        prop.classes     [ CSS.form_text ]
+                        prop.id          "titleForm"
+                        prop.placeholder "Post Title"
+                    ]
+                    ]
                 ]
                 Html.div [
-                    prop.className "centre"
+                    prop.classes [ CSS.mb_3; CSS.px_5 ]
                     prop.children [
-                        Html.input [ prop.type' "submit"; prop.className "btn" ] ]
+                    Html.textarea [
+                        prop.type'       "text"
+                        prop.classes     [ CSS.form_control ]
+                        prop.id          "titleContent"
+                        prop.placeholder "Post Content"
+                        prop.rows        5
+                    ]
+                    ]
                 ]
+                Html.button [
+                    prop.type'   "submit"
+                    prop.classes [ CSS.btn; CSS.btn_primary; CSS.float_end; CSS.py_2; CSS.px_4; CSS.m_5 ]
+                    prop.text    "Submit"
+                ]
+                // Html.input [
+                //     prop.id "postTitle"
+                //     prop.name "title"
+                //     prop.placeholder "Post Title"
+                // ]
+                // Html.textarea [
+                //     prop.id "postContent"
+                //     prop.name "content"
+                //     prop.placeholder "Post content"
+                // ]
+                // Html.div [
+                //     prop.className "centre"
+                //     prop.children [
+                //         Html.input [ prop.type' "submit"; prop.className "btn" ] ]
+                // ]
                 ]
             ]
             ]
@@ -131,4 +203,4 @@ module Views =
     let post () =
         layout
         <| Html.div [ prop.id "root"; prop.children [postForm ()] ]
-        <| Some "post"
+        <| None

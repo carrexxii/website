@@ -9,6 +9,7 @@
     <PackageReference Include="feliz.viewengine" Version="0.24.0" />
     <PackageReference Include="Giraffe" Version="6.2.0" />
     <PackageReference Include="litedb.fsharp" Version="2.16.0" />
+    <PackageReference Include="Zanaptak.TypedCssClasses" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src/models.fs" />

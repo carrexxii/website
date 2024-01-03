@@ -4,6 +4,7 @@ bin/
 obj/
 fable_modules/
 node_modules/
+client/lib
 package-lock.json
 *.txt
 *.ttf
