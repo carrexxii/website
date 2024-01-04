@@ -6,8 +6,10 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="feliz" Version="2.7.0" />
+    <PackageReference Include="Zanaptak.TypedCssClasses" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="components.fs" />
+    <Compile Include="post.fs" />
   </ItemGroup>
 </Project>

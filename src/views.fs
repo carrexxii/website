@@ -5,9 +5,9 @@ open Feliz.ViewEngine
 open Zanaptak.TypedCssClasses
 
 module Views =
-    let [<Literal>] frameworkCSS = "lib/bootstrap.min.css"
-    let [<Literal>] frameworkJS  = "lib/bootstrap.bundle.min.js"
-    type CSS = CssClasses<"client/lib/bootstrap.min.css", Naming.Underscores>
+    let [<Literal>] frameworkCSS = "static/bootstrap.min.css"
+    let [<Literal>] frameworkJS  = "bootstrap.bundle.min.js"
+    type CSS       = CssClasses<"client/static/bootstrap.min.css", Naming.Underscores>
     type CustomCSS = CssClasses<"client/static/styles.css", Naming.Underscores>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -66,6 +66,9 @@ module Views =
         ]
 
     let layout (content: ReactElement) script =
+        let loadScript name =
+            Html.script [ prop.type' "module"; prop.src $"js/{name}" ]
+
         Html.html [
             prop.lang "en"
             prop.children [
@@ -73,11 +76,10 @@ module Views =
                 Html.meta [ prop.charset "utf-8" ]
                 Html.meta [ prop.name "viewport"; prop.content "width=device-width, initial-scale=1" ]
 
-                let script name = Html.script [ prop.type' "module"; prop.src name ]
-                script "lib/react.js"
-                script "lib/react-dom.js"
-                script "components.js"
-                script frameworkJS
+                loadScript "react.js"
+                loadScript "react-dom.js"
+                loadScript "components.js"
+                loadScript frameworkJS
 
                 Html.link [
                     prop.rel   "stylesheet"
@@ -104,56 +106,14 @@ module Views =
 
                     content
                     match script with
-                    | Some script -> Html.script [ prop.type' "module"; prop.src $"{script}.js" ]
-                    | None -> ()
+                    | Some s -> loadScript s
+                    | None   -> ()
 
                     footer ()
                     ]
                 ]
                 Html.div [ prop.classes [ CSS.col; CSS.col_sm_2 ] ]
                 ]
-            ]
-            ]
-        ]
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    let postForm () =
-        Html.div [
-            prop.children [
-            Html.form [
-                prop.classes [ CSS.form_floating; CSS.m_5 ]
-                prop.children [
-                Html.input [
-                    prop.classes     [ CSS.form_control; CSS.p_3; CSS.pt_5; CSS.w_75; CSS.fs_3 ]
-                    prop.id          "titleForm"
-                    prop.placeholder "Post Title"
-                ]
-                Html.label [
-                    prop.for' "titleForm"
-                    prop.text "Post Title"
-                ]
-                ]
-            ]
-            Html.form [
-                prop.classes [ CSS.form_floating; CSS.m_5 ]
-                prop.children [
-                Html.textarea [
-                    prop.classes     [ CSS.form_control; CSS.px_3 ]
-                    prop.id          "titleContent"
-                    prop.placeholder "Post Content"
-                    prop.style [ style.height 300 ]
-                ]
-                Html.label [
-                    prop.for' "titleContent"
-                    prop.text "Post Content"
-                ]
-                ]
-            ]
-            Html.button [
-                prop.type'   "submit"
-                prop.classes [ CSS.btn; CSS.btn_primary; CSS.float_end; CSS.py_2; CSS.px_4; CSS.m_5 ]
-                prop.text    "Submit"
             ]
             ]
         ]
@@ -186,5 +146,5 @@ module Views =
 
     let post () =
         layout
-        <| Html.div [ prop.id "root"; prop.children [postForm ()] ]
-        <| None
+        <| Html.div [ prop.id "root" ]
+        <| Some "post.js"

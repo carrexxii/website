@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "babel": "npx babel --minified --presets=babel-preset-react client/*.jsx --out-dir ."
+    "babel": "npx babel --minified --presets=babel-preset-react ./client/*.jsx --out-dir .",
+    "babel-watch": "npx babel --minified --presets=babel-preset-react ./client/*.jsx --out-dir . --watch ./client/*.jsx"
   },
   "dependencies": {
     "react": "^18.2.0",

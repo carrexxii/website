@@ -1,3 +1,5 @@
 import { PostForm } from './components.js';
 
-ReactDOM.render(<PostForm />, document.getElementById("root"))
+const container = document.getElementById("root")
+const root      = ReactDOM.createRoot(container)
+root.render(<PostForm />)
